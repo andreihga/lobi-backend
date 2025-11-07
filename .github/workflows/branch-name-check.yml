@@ -1,0 +1,31 @@
+name: Branch Name Check
+
+# Trigger workflow on push (all branches except main) and on PRs
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          # Determine branch name: use GITHUB_HEAD_REF for PRs, GITHUB_REF for direct pushes
+          if [ -n "$GITHUB_HEAD_REF" ]; then
+            BRANCH_NAME="$GITHUB_HEAD_REF"
+          else
+            BRANCH_NAME="${GITHUB_REF##*/}"
+          fi
+
+          echo "Branch: $BRANCH_NAME"
+
+          # Regex: LOBI-<number>_<text> (letters, numbers, hyphens, no underscores)
+          if [[ ! "$BRANCH_NAME" =~ ^LOBI-[0-9]+_[a-zA-Z0-9-]+$ ]]; then
+            echo "❌ Branch name '$BRANCH_NAME' does not match the required pattern: LOBI-<number>_<text>"
+            exit 1
+          fi
+
+          echo "✅ Branch name is valid."
