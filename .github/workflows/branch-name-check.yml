@@ -6,6 +6,7 @@ on:
     branches-ignore:
       - main
   pull_request:
+    branches: [ main ]
 
 jobs:
   check-branch-name:
@@ -29,3 +30,28 @@ jobs:
           fi
 
           echo "✅ Branch name is valid."
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build and run tests
+        run: ./gradlew clean build
