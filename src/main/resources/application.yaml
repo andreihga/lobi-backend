@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: lobi
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,lobi-backend"
