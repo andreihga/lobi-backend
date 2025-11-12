@@ -27,7 +27,7 @@ jobs:
           fi
 
           echo "✅ Branch name is valid."
-  build-and-test:
+  build-test-push-to-dockerhub:
     runs-on: ubuntu-latest
 
     steps:
