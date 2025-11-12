@@ -4,6 +4,7 @@ services:
   postgres:
     image: postgres:16
     container_name: lobi-postgres
+    restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
@@ -12,8 +13,10 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 
   backend:
-    build: ./
+    #build: ./ #use this for running on your local machine and comment the next line
+    image: ${DOCKERHUB_USERNAME}/lobi-backend:${DEPLOY_TAG}
     container_name: lobi-backend
+    restart: always
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
