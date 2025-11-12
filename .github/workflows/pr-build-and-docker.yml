@@ -2,9 +2,6 @@ name: Build and Push to DockerHub
 
 # Trigger workflow on push (all branches except main) and on PRs
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
     branches: [ main ]
 

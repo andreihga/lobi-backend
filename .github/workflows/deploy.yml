@@ -75,6 +75,7 @@ jobs:
           script: |
             cd ~/lobi/staging/lobi-backend
             export DEPLOY_TAG=${{ steps.tag.outputs.TAG }}
+            export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             git pull
             docker compose --env-file .env.staging pull
             docker compose --env-file .env.staging up -d
@@ -94,5 +95,7 @@ jobs:
           script: |
             cd ~/lobi/production/lobi-backend
             export DEPLOY_TAG=${{ needs.build-and-deploy.outputs.TAG }}
+            export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            git pull
             docker compose --env-file .env.production pull
             docker compose --env-file .env.production up -d
