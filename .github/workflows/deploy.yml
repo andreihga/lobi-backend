@@ -79,6 +79,7 @@ jobs:
             git pull
             docker compose --env-file .env.staging pull
             docker compose --env-file .env.staging up -d
+            docker compose --env-file .env.staging restart nginx
 
   deploy-production:
     needs: build-main-and-deploy-staging
