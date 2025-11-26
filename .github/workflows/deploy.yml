@@ -77,9 +77,9 @@ jobs:
             export DEPLOY_TAG=${{ steps.tag.outputs.TAG }}
             export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             git pull
-            docker compose --env-file .env.staging pull
-            docker compose --env-file .env.staging up -d
-            docker compose --env-file .env.staging restart nginx
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.staging pull
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.staging up -d
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.staging restart nginx
 
   deploy-production:
     needs: build-main-and-deploy-staging
@@ -98,6 +98,6 @@ jobs:
             export DEPLOY_TAG=${{ needs.build-main-and-deploy-staging.outputs.TAG }}
             export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             git pull
-            docker compose --env-file .env.production pull
-            docker compose --env-file .env.production up -d
-            docker compose --env-file .env.production restart nginx
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.production pull
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.production up -d
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml --env-file .env.production restart nginx
